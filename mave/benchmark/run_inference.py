@@ -221,15 +221,17 @@ def get_measure_str(true_evidences,
   normalized_top_prediction = _normalize_text_squad(top_prediction)  # pyrefly: ignore[bad-argument-type]
 
   if not normalized_true_evidences and not normalized_top_prediction:
-    return _N_N
+    # A means "Value"; paper uses V for this
+    # B means "incorrect value"; paper uses W for this
+    return _N_N # true negative, NN in paper
   elif not normalized_true_evidences:
-    return _N_A
+    return _N_A # false positive, NV in paper
   elif not normalized_top_prediction:
-    return _A_N
+    return _A_N # false negative, VN in paper
   elif normalized_top_prediction in normalized_true_evidences:
-    return _A_A
+    return _A_A # true positive, correct, VC in paper
   else:
-    return _A_B
+    return _A_B # true positive, incorrect, VW in paper
 
 
 def _get_num_paragraphs(json_example):
